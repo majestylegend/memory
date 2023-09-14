@@ -40,8 +40,8 @@ public class Game {
         this.first = firstPlayer;
         this.second = secondPlayer;
         this.users = Arrays.asList(
-                new User(firstPlayer),
-                new User(secondPlayer)
+                User.wrap(firstPlayer),
+                User.wrap(secondPlayer)
         );
 
         // Определяем кто играет первый
@@ -113,9 +113,14 @@ public class Game {
             broadcast(ChatUtil.prefixed("Игра", "&e%s &aвыиграл игру со счётом &a%d", player.getName(), score));
         }
 
+        // Обрабатываем победу и проигрыш
+        User.wrap(player).addWin();
+        User.wrap(getOpponent(player)).addLose();
+
         // Удаляем игру
         Memory.getGameManager().end(this);
 
+        // Закрываем "стол"
         if (first != null) first.closeInventory();
         if (second != null) second.closeInventory();
     }

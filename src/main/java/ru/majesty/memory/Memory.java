@@ -1,6 +1,9 @@
 package ru.majesty.memory;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -8,10 +11,14 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.majesty.memory.command.MemoryCommand;
+import ru.majesty.memory.database.DatabaseManager;
 import ru.majesty.memory.game.GameManager;
 import ru.majesty.memory.game.Queue;
 import ru.majesty.memory.listener.GameListener;
 import ru.majesty.memory.listener.PlayerListener;
+import ru.majesty.memory.user.UserManager;
+
+import java.sql.Connection;
 
 /**
  * Created by M4JESTY on 14.09.2023.
@@ -24,12 +31,18 @@ public class Memory extends JavaPlugin {
     private static Queue queue;
     @Getter
     private static GameManager gameManager;
+    @Getter
+    private static DatabaseManager databaseManager;
+    @Getter
+    private static UserManager userManager;
 
     @Override
     public void onEnable() {
         instance = this;
         queue = new Queue();
         gameManager = new GameManager();
+        databaseManager = new DatabaseManager();
+        userManager = new UserManager();
 
         registerListeners(
                 new PlayerListener(),
@@ -54,5 +67,10 @@ public class Memory extends JavaPlugin {
             if (cmd instanceof TabCompleter)
                 pluginCmd.setTabCompleter((TabCompleter) cmd);
         }
+    }
+
+    @SneakyThrows
+    public static Connection getConnection() {
+        return databaseManager.getConnection();
     }
 }
