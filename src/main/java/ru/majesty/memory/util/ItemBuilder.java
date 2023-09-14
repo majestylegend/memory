@@ -30,7 +30,7 @@ public class ItemBuilder {
     }
 
     public ItemStack getItem() {
-        ItemStack item = new ItemStack(type.getId(), amount, (short) subID);
+        ItemStack item = new ItemStack(type, amount, (short) subID);
         ItemMeta meta = item.getItemMeta();
         if (name != null) meta.setDisplayName(name);
         if (description.size() != 0) meta.setLore(description);
@@ -68,11 +68,6 @@ public class ItemBuilder {
 
     public ItemBuilder type(Material type) {
         this.type = type;
-        return this;
-    }
-
-    public ItemBuilder id(int id) {
-        this.type = Material.getMaterial(id);
         return this;
     }
 

@@ -35,13 +35,13 @@ public class GameListener implements Listener {
             if (game != null) {
                 event.setCancelled(true);
 
-                if (event.getClickedInventory().getTitle() == null ||
-                        !event.getClickedInventory().getTitle().contains(player.getName())) {
+                if (event.getView() == null ||
+                        !event.getView().getTitle().contains(player.getName())) {
                     return;
                 }
 
                 // Проверка валидности предмета
-                if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.BARRIER)
+                if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.GLASS_PANE)
                     return;
 
                 // Проверяем является ли клик игровым
@@ -94,7 +94,7 @@ public class GameListener implements Listener {
 
                                 game.setTurn(player);
 
-                                game.broadcast(ChatUtil.prefixed("Игра", "&e%s &fпродолжает.", player.getName()));
+                                game.broadcast(ChatUtil.prefixed("Игра", "&e%s&f, Ваш ход.", game.getTurn().getName()));
                             }
 
                             user.setLastCard(null);

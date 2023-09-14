@@ -23,7 +23,7 @@ import static ru.majesty.memory.util.Constants.COVER;
 public class Game {
 
     private Player first, second;
-    @Getter @Setter
+    @Getter
     private Player turn;
     private ItemStack[] pairs;
     private List<User> users;
@@ -97,8 +97,8 @@ public class Game {
             }
         }
 
-        for (Player p : getPlayers()) {
-            p.openInventory(inventory);
+        for (Player player : getPlayers()) {
+            player.openInventory(inventory);
         }
         setUpdate(false);
     }
@@ -147,8 +147,8 @@ public class Game {
         return null;
     }
 
-    public Player getOpponent(Player p) {
-        return p.getName().equalsIgnoreCase(first.getName()) ? second : first;
+    public Player getOpponent(Player player) {
+        return player.getName().equalsIgnoreCase(first.getName()) ? second : first;
     }
 
     public List<Player> getPlayers() {
@@ -168,6 +168,10 @@ public class Game {
             }
         }
         return null;
+    }
+    
+    public void setTurn(Player player) {
+        this.turn = getOpponent(player);
     }
 
     private void createInventory() {

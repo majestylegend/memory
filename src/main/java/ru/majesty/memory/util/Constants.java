@@ -5,23 +5,23 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class Constants {
-    public static final ItemStack COVER = new ItemBuilder().name("?").type(Material.STAINED_GLASS_PANE).getItem();
-    public static final ItemStack BORDER = new ItemBuilder().name("").type(Material.STAINED_GLASS_PANE).subID(15).getItem();
+    public static final ItemStack COVER = new ItemBuilder().name("?").type(Material.BARRIER).getItem();
+    public static final ItemStack BORDER = new ItemBuilder().name("").type(Material.GLASS_PANE).getItem();
     public static final ItemStack[] DEFAULT_PAIRS =
         new ItemStack[]{
-                new ItemBuilder().type(Material.INK_SACK).subID(13).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(8).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(1).getItem(),
-                new ItemBuilder().type(Material.SULPHUR).getItem(),
+                new ItemBuilder().type(Material.DIAMOND).getItem(),
+                new ItemBuilder().type(Material.GOLD_INGOT).getItem(),
+                new ItemBuilder().type(Material.IRON_INGOT).getItem(),
+                new ItemBuilder().type(Material.LEATHER).getItem(),
                 new ItemBuilder().type(Material.GLOWSTONE_DUST).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(2).getItem(),
+                new ItemBuilder().type(Material.DIRT).getItem(),
                 new ItemBuilder().type(Material.FLINT).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(10).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(12).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(14).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(9).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(5).getItem(),
-                new ItemBuilder().type(Material.INK_SACK).subID(4).getItem(),
+                new ItemBuilder().type(Material.GUNPOWDER).getItem(),
+                new ItemBuilder().type(Material.BONE).getItem(),
+                new ItemBuilder().type(Material.ARROW).getItem(),
+                new ItemBuilder().type(Material.EMERALD).getItem(),
+                new ItemBuilder().type(Material.NETHER_STAR).getItem(),
+                new ItemBuilder().type(Material.GHAST_TEAR).getItem(),
                 new ItemBuilder().type(Material.SUGAR).getItem(),
         };
 }

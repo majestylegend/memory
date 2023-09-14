@@ -2,6 +2,7 @@ name: Memory
 version: 1.0.0
 author: M4JESTY
 main: ru.majesty.memory.Memory
+api-version: 1.16
 commands:
   memory:
     description: Встать в очередь на игру

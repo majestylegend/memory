@@ -3,6 +3,7 @@ package ru.majesty.memory.game;
 import com.google.common.collect.Lists;
 import org.bukkit.entity.Player;
 import ru.majesty.memory.Memory;
+import ru.majesty.memory.util.ChatUtil;
 
 import java.util.List;
 
@@ -16,12 +17,12 @@ public class Queue {
     public void queue(Player player) {
         if (queue.contains(player)) {
             removeFromQueue(player);
-            player.sendMessage("&cВы покинули очередь на игру.");
+            player.sendMessage(ChatUtil.colorize("&cВы покинули очередь на игру."));
             return;
         }
 
         queue.add(player);
-        player.sendMessage("&aВы были добавлены в очередь на игру. Ожидаем второго игрока...");
+        player.sendMessage(ChatUtil.colorize("&aВы были добавлены в очередь на игру. Ожидаем второго игрока..."));
 
         // Проверяем возможно ли запустить игру
         if (queue.size() == 2) {
