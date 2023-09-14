@@ -1,31 +1,20 @@
 package ru.majesty.memory.game;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * Created by M4JESTY on 14.09.2023.
  */
+@AllArgsConstructor
+@Getter
+@Setter
 public class Card {
 
     private int slot;
     private ItemStack item;
-
-    public Card(int slot, ItemStack item) {
-        this.slot = slot;
-        this.item = item;
-    }
-
-    public int getSlot() {
-        return slot;
-    }
-
-    public void setSlot(int slot) {
-        this.slot = slot;
-    }
-
-    public ItemStack getItem() {
-        return item;
-    }
 
     @Override
     public boolean equals(Object obj) {

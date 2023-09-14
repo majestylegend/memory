@@ -11,11 +11,10 @@ import java.util.List;
  * Created by M4JESTY on 14.09.2023.
  */
 public class Queue {
-
     private final List<Player> queue = Lists.newArrayList();
 
     public void queue(Player player) {
-        if (queue.contains(player)) {
+        if (contains(player)) {
             removeFromQueue(player);
             player.sendMessage(ChatUtil.colorize("&cВы покинули очередь на игру."));
             return;

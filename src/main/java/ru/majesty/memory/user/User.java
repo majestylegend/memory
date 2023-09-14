@@ -1,6 +1,7 @@
 package ru.majesty.memory.user;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import ru.majesty.memory.game.Card;
@@ -10,16 +11,12 @@ import ru.majesty.memory.game.Card;
  */
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class User {
 
-    private Player handle;
-
+    private final Player handle;
     private Card lastCard;
     private int score;
-
-    public User(Player player) {
-        this.handle = player;
-    }
 
     public boolean hasCard() {
         return lastCard != null;
