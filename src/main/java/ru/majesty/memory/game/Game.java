@@ -29,9 +29,11 @@ public class Game {
     private List<User> users;
     private List<Card> cards;
     private Inventory inventory;
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean clickAble;
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean update;
 
     public Game(Player firstPlayer, Player secondPlayer) {
@@ -169,7 +171,7 @@ public class Game {
         }
         return null;
     }
-    
+
     public void setTurn(Player player) {
         this.turn = getOpponent(player);
     }
@@ -181,7 +183,7 @@ public class Game {
 
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack item = inventory.getItem(i);
-            if (item == null || item.getType() == null || item.getType() == Material.AIR) {
+            if (item == null || item.getType() == Material.AIR) {
                 inventory.setItem(i, COVER);
 
                 for (Card card : cards) {
