@@ -8,12 +8,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
 import ru.majesty.memory.Memory;
 import ru.majesty.memory.game.Card;
 import ru.majesty.memory.game.Game;
 import ru.majesty.memory.user.User;
 import ru.majesty.memory.util.ChatUtil;
-import ru.majesty.memory.util.ItemBuilder;
 
 import static ru.majesty.memory.util.Constants.COVER;
 
@@ -83,8 +83,8 @@ public class GameListener implements Listener {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Memory.getInstance(), () -> {
 
                             if (user.getLastCard().equals(card)) {
-                                game.changeItem(user.getLastCard().getSlot(), new ItemBuilder().type(Material.AIR).getItem());
-                                game.changeItem(event.getSlot(), new ItemBuilder().type(Material.AIR).getItem());
+                                game.changeItem(user.getLastCard().getSlot(), new ItemStack(Material.AIR));
+                                game.changeItem(event.getSlot(), new ItemStack(Material.AIR));
 
                                 game.updateTitle();
                                 game.broadcast(ChatUtil.prefixed("Игра", "&e%s &fможет взять другую карту.", player.getName()));
