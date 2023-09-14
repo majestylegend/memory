@@ -25,15 +25,11 @@ public class Queue {
 
         // Проверяем возможно ли запустить игру
         if (queue.size() == 2) {
-            Player firstPlayer = queue.get(0);
-            Player secondPlayer = queue.get(1);
+            Player firstPlayer = queue.remove(0);
+            Player secondPlayer = queue.remove(1);
 
             // Создаём новую игру
             Memory.getGameManager().create(firstPlayer, secondPlayer);
-
-            // Очищаем очередь
-            removeFromQueue(firstPlayer);
-            removeFromQueue(secondPlayer);
         }
     }
 
