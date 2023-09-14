@@ -26,7 +26,7 @@ public class Queue {
         // Проверяем возможно ли запустить игру
         if (queue.size() == 2) {
             Player firstPlayer = queue.remove(0);
-            Player secondPlayer = queue.remove(1);
+            Player secondPlayer = queue.remove(0);
 
             // Создаём новую игру
             Memory.getGameManager().create(firstPlayer, secondPlayer);
