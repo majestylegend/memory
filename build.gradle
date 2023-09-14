@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.majesty'
+version '1.0.0'
+
+repositories {
+    mavenLocal()
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+}
+
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+}
+
+jar {
+    from configurations.runtimeClasspath.collect(project.&zipTree)
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType(JavaCompile)*.options*.encoding = "UTF-8"

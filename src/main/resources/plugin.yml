@@ -1,0 +1,8 @@
+name: Memory
+version: 1.0.0
+author: M4JESTY
+main: ru.majesty.memory.Memory
+commands:
+  memory:
+    description: Встать в очередь на игру
+    permission: memory.queue
