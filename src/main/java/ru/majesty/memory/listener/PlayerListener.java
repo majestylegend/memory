@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import ru.majesty.memory.Memory;
 import ru.majesty.memory.user.User;
-import ru.majesty.memory.user.UserManager;
 
 /**
  * Created by M4JESTY on 14.09.2023.

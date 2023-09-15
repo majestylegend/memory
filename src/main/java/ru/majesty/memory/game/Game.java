@@ -9,7 +9,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import ru.majesty.memory.Memory;
 import ru.majesty.memory.user.User;
-import ru.majesty.memory.user.UserManager;
 import ru.majesty.memory.util.ChatUtil;
 import ru.majesty.memory.util.Constants;
 
