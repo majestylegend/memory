@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GameManager {
     private final Memory instance;
-    private List<Game> games = Lists.newArrayList();
+    private final List<Game> games = Lists.newArrayList();
 
     public void create(User firstPlayer, User secondPlayer) {
         Game game = new Game(instance, firstPlayer, secondPlayer);
