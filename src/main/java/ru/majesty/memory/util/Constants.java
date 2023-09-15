@@ -9,11 +9,12 @@ import org.bukkit.inventory.ItemStack;
  */
 @UtilityClass
 public class Constants {
+
     public final String DEFAULT_PREFIX = "Игра";
     public final ItemStack COVER = new ItemStack(Material.BARRIER);
     public final ItemStack BORDER = new ItemStack(Material.GLASS_PANE);
     public final ItemStack[] DEFAULT_PAIRS =
-            new ItemStack[]{
+            new ItemStack[] {
                     new ItemStack(Material.DIAMOND),
                     new ItemStack(Material.GOLD_INGOT),
                     new ItemStack(Material.IRON_INGOT),
@@ -29,4 +30,5 @@ public class Constants {
                     new ItemStack(Material.GHAST_TEAR),
                     new ItemStack(Material.SUGAR),
             };
+
 }

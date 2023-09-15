@@ -44,7 +44,7 @@ public class Memory extends JavaPlugin {
 
         registerListeners(
                 new PlayerListener(this),
-                new GameListener()
+                new GameListener(this)
         );
 
         tryRegisterCommand("memory", new MemoryCommand(this));
@@ -62,8 +62,9 @@ public class Memory extends JavaPlugin {
             instance.getLogger().info("Failed to load command " + cmdKey + ". Please, add it into your plugin.yml.");
         } else {
             pluginCmd.setExecutor(cmd);
-            if (cmd instanceof TabCompleter)
+            if (cmd instanceof TabCompleter) {
                 pluginCmd.setTabCompleter((TabCompleter) cmd);
+            }
         }
     }
 }

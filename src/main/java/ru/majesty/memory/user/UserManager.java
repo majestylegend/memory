@@ -22,14 +22,6 @@ public class UserManager {
         userDao.createTable();
     }
 
-    public static User wrap(String name) {
-        return users.get(name);
-    }
-
-    public static User wrap(Player player) {
-        return wrap(player.getName());
-    }
-
     @SneakyThrows
     public void load(String name) {
         UserData data = new UserData(0, 0);
@@ -47,5 +39,13 @@ public class UserManager {
     public void unload(User user) {
         users.remove(user.getHandle().getName());
         userDao.update(user);
+    }
+
+    public User get(String name) {
+        return users.get(name);
+    }
+
+    public User get(Player player) {
+        return get(player.getName());
     }
 }

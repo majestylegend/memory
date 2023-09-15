@@ -18,7 +18,7 @@ public class MemoryCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            instance.getQueueManager().queue(UserManager.wrap((Player) sender));
+            instance.getQueueManager().queue(instance.getUserManager().get((Player) sender));
         }
         return true;
     }

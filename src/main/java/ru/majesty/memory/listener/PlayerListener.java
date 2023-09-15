@@ -28,7 +28,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void on(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        User user = UserManager.wrap(player);
+        User user = instance.getUserManager().get(player);
 
         // Проверяем есть ли игрок в очереди и удаляем
         if (instance.getQueueManager().contains(user)) {
@@ -42,7 +42,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void on(PlayerKickEvent event) {
         Player player = event.getPlayer();
-        User user = UserManager.wrap(player);
+        User user = instance.getUserManager().get(player);
 
         // Проверяем есть ли игрок в очереди и удаляем
         if (instance.getQueueManager().contains(user)) {

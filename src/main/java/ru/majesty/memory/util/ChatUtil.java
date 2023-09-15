@@ -26,4 +26,5 @@ public class ChatUtil {
     public String prefixed(String message, Object... args) {
         return prefixed(String.format(message, args));
     }
+
 }

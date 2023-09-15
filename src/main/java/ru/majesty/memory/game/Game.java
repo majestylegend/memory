@@ -27,7 +27,6 @@ public class Game {
     @Getter
     private Player turn;
     private ItemStack[] pairs;
-    private List<User> users;
     private List<Card> cards;
     private Inventory inventory;
     @Getter
@@ -41,10 +40,6 @@ public class Game {
         this.instance = instance;
         this.firstPlayer = firstPlayer.getHandle();
         this.secondPlayer = secondPlayer.getHandle();
-        this.users = Arrays.asList(
-                firstPlayer,
-                secondPlayer
-        );
 
         // Определяем кто играет первый
         this.turn = getRandomTurn();
@@ -82,8 +77,8 @@ public class Game {
     }
 
     public void broadcast(String message, Object... args) {
-        UserManager.wrap(firstPlayer).sendMessage(message, args);
-        UserManager.wrap(secondPlayer).sendMessage(message, args);
+        instance.getUserManager().get(firstPlayer).sendMessage(message, args);
+        instance.getUserManager().get(secondPlayer).sendMessage(message, args);
     }
 
     public void changeItem(int index, ItemStack item) {
@@ -94,8 +89,8 @@ public class Game {
         setUpdate(true);
 
         Inventory temp = inventory;
-        this.inventory = Bukkit.createInventory(null, 54, "§b" + firstPlayer.getName() + " " + UserManager.wrap(firstPlayer).getScore() + " : " +
-                UserManager.wrap(secondPlayer).getScore() + " " + secondPlayer.getName());
+        this.inventory = Bukkit.createInventory(null, 54, "§b" + firstPlayer.getName() + " " + instance.getUserManager().get(firstPlayer).getScore() + " : " +
+                instance.getUserManager().get(secondPlayer).getScore() + " " + secondPlayer.getName());
 
         for (int i = 0; i < temp.getSize(); i++) {
             ItemStack item = temp.getItem(i);
@@ -133,8 +128,8 @@ public class Game {
     public boolean checkWin() {
         int maxPairs = 14;
 
-        User firstPlayer = UserManager.wrap(this.firstPlayer);
-        User secondPlayer = UserManager.wrap(this.secondPlayer);
+        User firstPlayer = instance.getUserManager().get(this.firstPlayer);
+        User secondPlayer = instance.getUserManager().get(this.secondPlayer);
 
         if (firstPlayer.getScore() + secondPlayer.getScore() < maxPairs) {
             return false;

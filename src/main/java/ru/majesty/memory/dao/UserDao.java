@@ -23,4 +23,5 @@ public interface UserDao {
 
     @SqlUpdate("UPDATE memory_users SET win = :win, lose = :lose WHERE player_name = :name")
     void update(@BindBean User user);
+
 }
