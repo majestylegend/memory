@@ -18,17 +18,14 @@ import ru.majesty.memory.user.UserManager;
 /**
  * Created by M4JESTY on 14.09.2023.
  */
+@Getter
 public class Memory extends JavaPlugin {
 
     @Getter
     private static Memory instance;
-    @Getter
     private QueueManager queueManager;
-    @Getter
     private GameManager gameManager;
-    @Getter
     private DatabaseManager databaseManager;
-    @Getter
     private UserManager userManager;
 
     @Override
