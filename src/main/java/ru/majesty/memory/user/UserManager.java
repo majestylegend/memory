@@ -8,6 +8,9 @@ import ru.majesty.memory.dao.UserDao;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Created by M4JESTY on 14.09.2023.
+ */
 public class UserManager {
     private static final Map<String, User> users = new ConcurrentHashMap<>();
     private final UserDao userDao;

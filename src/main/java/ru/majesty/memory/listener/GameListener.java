@@ -14,7 +14,7 @@ import ru.majesty.memory.Memory;
 import ru.majesty.memory.game.Card;
 import ru.majesty.memory.game.Game;
 import ru.majesty.memory.user.User;
-import ru.majesty.memory.util.ChatUtil;
+import ru.majesty.memory.user.UserManager;
 
 import static ru.majesty.memory.util.Constants.COVER;
 
@@ -34,7 +34,8 @@ public class GameListener implements Listener {
                 return;
             }
 
-            Game game = instance.getGameManager().getGame(player);
+            User user = UserManager.wrap(player);
+            Game game = user.getGame();
             if (game != null) {
                 event.setCancelled(true);
 
@@ -51,13 +52,12 @@ public class GameListener implements Listener {
                 if (event.getAction() == InventoryAction.PICKUP_ALL || event.getAction() == InventoryAction.PICKUP_HALF) {
 
                     // Проверяем кто должен ходить
-                    if (!game.getTurn().getUniqueId().equals(player.getUniqueId())) {
-                        player.sendMessage(ChatUtil.prefixed("Игра", "&cСейчас не Ваша очередь делать ход!"));
+                    if (!game.getTurn().equals(player)) {
+                        user.sendMessage("&cСейчас не Ваша очередь делать ход!");
                         return;
                     }
 
                     Card card = game.getCardBySlot(event.getSlot());
-                    User user = game.getUser(player);
 
                     // Проверяем является ли карта предыдущей
                     if (user.hasCard()) {
@@ -71,14 +71,14 @@ public class GameListener implements Listener {
 
                     if (user.hasCard()) {
                         if (user.getLastCard().equals(card)) {
-                            game.broadcast(ChatUtil.prefixed("Игра", "&e%s &aобнаружил пару!", player.getName()));
+                            game.broadcast("&e%s &aобнаружил пару!", player.getName());
                             user.addScore();
 
                             if (game.checkWin()) {
                                 return;
                             }
                         } else {
-                            game.broadcast(ChatUtil.prefixed("Игра", "&e%s &fcне нашёл пару.", player.getName()));
+                            game.broadcast("&e%s &fcне нашёл пару.", player.getName());
 
                             game.setTurn(player);
                         }
@@ -90,14 +90,14 @@ public class GameListener implements Listener {
                                 game.changeItem(event.getSlot(), new ItemStack(Material.AIR));
 
                                 game.updateTitle();
-                                game.broadcast(ChatUtil.prefixed("Игра", "&e%s &fможет взять другую карту.", player.getName()));
+                                game.broadcast("&e%s &fможет взять другую карту.", player.getName());
                             } else {
                                 game.changeItem(event.getSlot(), COVER);
                                 game.changeItem(user.getLastCard().getSlot(), COVER);
 
                                 game.setTurn(player);
 
-                                game.broadcast(ChatUtil.prefixed("Игра", "&e%s&f, Ваш ход.", game.getTurn().getName()));
+                                game.broadcast("&e%s&f, Ваш ход.", game.getTurn().getName());
                             }
 
                             user.setLastCard(null);
@@ -106,7 +106,7 @@ public class GameListener implements Listener {
                     } else {
                         user.setLastCard(card);
 
-                        player.sendMessage(ChatUtil.prefixed("Игра", "&cВы можете взять другую карту."));
+                        user.sendMessage("&cВы можете взять другую карту.");
 
                         game.setClickAble(true);
                     }
@@ -119,10 +119,10 @@ public class GameListener implements Listener {
     public void on(InventoryCloseEvent event) {
         if (event.getPlayer() instanceof Player) {
             Player player = (Player) event.getPlayer();
-            Game game = instance.getGameManager().getGame(player);
+            Game game = UserManager.wrap(player).getGame();
 
             if (game != null && !game.isUpdate()) {
-                game.win(game.getOpponent(player));
+                game.win(UserManager.wrap(game.getOpponent(player)));
             }
         }
     }

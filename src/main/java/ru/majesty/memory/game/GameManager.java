@@ -2,8 +2,8 @@ package ru.majesty.memory.game;
 
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.entity.Player;
 import ru.majesty.memory.Memory;
+import ru.majesty.memory.user.User;
 
 import java.util.List;
 
@@ -15,21 +15,12 @@ public class GameManager {
     private final Memory instance;
     private List<Game> games = Lists.newArrayList();
 
-    public void create(Player firstPlayer, Player secondPlayer) {
+    public void create(User firstPlayer, User secondPlayer) {
         Game game = new Game(instance, firstPlayer, secondPlayer);
         games.add(game);
     }
 
     public void end(Game game) {
         games.remove(game);
-    }
-
-    public Game getGame(Player player) {
-        for (Game game : games) {
-            if (game.getPlayers().contains(player))
-                return game;
-        }
-
-        return null;
     }
 }

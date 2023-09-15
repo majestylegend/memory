@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import ru.majesty.memory.game.Card;
+import ru.majesty.memory.game.Game;
 import ru.majesty.memory.util.ChatUtil;
 
 /**
@@ -19,6 +20,7 @@ public class User {
     private int lose;
     private Card lastCard;
     private int score;
+    private Game game;
 
     public User(String name, UserData data) {
         this.name = name;
@@ -37,13 +39,25 @@ public class User {
 
     public void addWin() {
         win++;
+        clearData();
     }
 
     public void addLose() {
         lose++;
+        clearData();
     }
 
     public void sendMessage(String message, Object... args) {
         handle.sendMessage(ChatUtil.prefixed(message, args));
+    }
+
+    public void sendMessage(String message) {
+        handle.sendMessage(ChatUtil.prefixed(message));
+    }
+
+    public void clearData() {
+        game = null;
+        lastCard = null;
+        score = 0;
     }
 }

@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import ru.majesty.memory.Memory;
+import ru.majesty.memory.user.User;
 import ru.majesty.memory.user.UserManager;
 
 /**
@@ -27,26 +28,28 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void on(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        User user = UserManager.wrap(player);
 
         // Проверяем есть ли игрок в очереди и удаляем
-        if (instance.getQueueManager().contains(player)) {
-            instance.getQueueManager().removeFromQueue(player);
+        if (instance.getQueueManager().contains(user)) {
+            instance.getQueueManager().removeFromQueue(user);
         }
 
         // Сохраняем и удаляем данные игрока
-        instance.getUserManager().unload(UserManager.wrap(player));
+        instance.getUserManager().unload(user);
     }
 
     @EventHandler
     public void on(PlayerKickEvent event) {
         Player player = event.getPlayer();
+        User user = UserManager.wrap(player);
 
         // Проверяем есть ли игрок в очереди и удаляем
-        if (instance.getQueueManager().contains(player)) {
-            instance.getQueueManager().removeFromQueue(player);
+        if (instance.getQueueManager().contains(user)) {
+            instance.getQueueManager().removeFromQueue(user);
         }
 
         // Сохраняем и удаляем данные игрока
-        instance.getUserManager().unload(UserManager.wrap(player));
+        instance.getUserManager().unload(user);
     }
 }

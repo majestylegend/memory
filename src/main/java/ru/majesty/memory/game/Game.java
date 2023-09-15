@@ -37,13 +37,13 @@ public class Game {
     @Setter
     private boolean update;
 
-    public Game(Memory instance, Player firstPlayer, Player secondPlayer) {
+    public Game(Memory instance, User firstPlayer, User secondPlayer) {
         this.instance = instance;
-        this.firstPlayer = firstPlayer;
-        this.secondPlayer = secondPlayer;
+        this.firstPlayer = firstPlayer.getHandle();
+        this.secondPlayer = secondPlayer.getHandle();
         this.users = Arrays.asList(
-                UserManager.wrap(firstPlayer),
-                UserManager.wrap(secondPlayer)
+                firstPlayer,
+                secondPlayer
         );
 
         // Определяем кто играет первый
@@ -67,20 +67,23 @@ public class Game {
         // Создаём игровой "стол"
         createInventory();
 
-        firstPlayer.sendMessage(ChatUtil.prefixed("Игра", "&fВы играете против &e%s", secondPlayer.getName()));
-        secondPlayer.sendMessage(ChatUtil.prefixed("Игра", "&fВы играете против &e%s", firstPlayer.getName()));
+        firstPlayer.sendMessage("&fВы играете против &e%s", secondPlayer.getName());
+        secondPlayer.sendMessage("&fВы играете против &e%s", firstPlayer.getName());
 
         broadcast(ChatUtil.prefixed("Игра", "&e%s &fначинает игру!", turn.getName()));
 
-        firstPlayer.openInventory(inventory);
-        secondPlayer.openInventory(inventory);
+        this.firstPlayer.openInventory(inventory);
+        this.secondPlayer.openInventory(inventory);
+
+        firstPlayer.setGame(this);
+        secondPlayer.setGame(this);
 
         setClickAble(true);
     }
 
-    public void broadcast(String message) {
-        firstPlayer.sendMessage(message);
-        secondPlayer.sendMessage(message);
+    public void broadcast(String message, Object... args) {
+        UserManager.wrap(firstPlayer).sendMessage(message, args);
+        UserManager.wrap(secondPlayer).sendMessage(message, args);
     }
 
     public void changeItem(int index, ItemStack item) {
@@ -91,8 +94,8 @@ public class Game {
         setUpdate(true);
 
         Inventory temp = inventory;
-        this.inventory = Bukkit.createInventory(null, 54, "§6" + firstPlayer.getName() + " " + getUser(firstPlayer).getScore() + " : " +
-                getUser(secondPlayer).getScore() + " " + secondPlayer.getName());
+        this.inventory = Bukkit.createInventory(null, 54, "§b" + firstPlayer.getName() + " " + UserManager.wrap(firstPlayer).getScore() + " : " +
+                UserManager.wrap(secondPlayer).getScore() + " " + secondPlayer.getName());
 
         for (int i = 0; i < temp.getSize(); i++) {
             ItemStack item = temp.getItem(i);
@@ -107,17 +110,17 @@ public class Game {
         setUpdate(false);
     }
 
-    public void win(Player player) {
-        if (player == null) {
-            broadcast(ChatUtil.prefixed("Игра", "&cНичья! Никто не выиграл."));
+    public void win(User user) {
+        if (user == null) {
+            broadcast("&cНичья! Никто не выиграл.");
         } else {
-            Integer score = getUser(player).getScore();
-            broadcast(ChatUtil.prefixed("Игра", "&e%s &aвыиграл игру со счётом &a%d", player.getName(), score));
+            Integer score = user.getScore();
+            broadcast("&e%s &aвыиграл игру со счётом &a%d", user.getName(), score);
         }
 
         // Обрабатываем победу и проигрыш
-        UserManager.wrap(player).addWin();
-        UserManager.wrap(getOpponent(player)).addLose();
+        user.addWin();
+        user.addLose();
 
         // Удаляем игру
         instance.getGameManager().end(this);
@@ -130,14 +133,17 @@ public class Game {
     public boolean checkWin() {
         int maxPairs = 14;
 
-        if (getUser(firstPlayer).getScore() + getUser(secondPlayer).getScore() < maxPairs) {
+        User firstPlayer = UserManager.wrap(this.firstPlayer);
+        User secondPlayer = UserManager.wrap(this.secondPlayer);
+
+        if (firstPlayer.getScore() + secondPlayer.getScore() < maxPairs) {
             return false;
         }
-        if (getUser(firstPlayer).getScore() > getUser(secondPlayer).getScore()) {
+        if (firstPlayer.getScore() > secondPlayer.getScore()) {
             win(firstPlayer);
             return true;
         }
-        if (getUser(firstPlayer).getScore() < getUser(secondPlayer).getScore()) {
+        if (firstPlayer.getScore() < secondPlayer.getScore()) {
             win(secondPlayer);
             return true;
         }
@@ -168,15 +174,6 @@ public class Game {
         if (secondPlayer.isOnline()) players.add(secondPlayer);
 
         return players;
-    }
-
-    public User getUser(Player player) {
-        for (User user : users) {
-            if (player.equals(user.getHandle())) {
-                return user;
-            }
-        }
-        return null;
     }
 
     public void setTurn(Player player) {

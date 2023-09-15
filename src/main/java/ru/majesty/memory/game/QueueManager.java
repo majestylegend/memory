@@ -2,9 +2,8 @@ package ru.majesty.memory.game;
 
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.entity.Player;
 import ru.majesty.memory.Memory;
-import ru.majesty.memory.util.ChatUtil;
+import ru.majesty.memory.user.User;
 
 import java.util.List;
 
@@ -14,33 +13,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QueueManager {
     private final Memory instance;
-    private final List<Player> queue = Lists.newArrayList();
+    private final List<User> queue = Lists.newArrayList();
 
-    public void queue(Player player) {
-        if (contains(player)) {
-            removeFromQueue(player);
-            player.sendMessage(ChatUtil.colorize("&cВы покинули очередь на игру."));
+    public void queue(User user) {
+        if (contains(user)) {
+            removeFromQueue(user);
+            user.sendMessage("&cВы покинули очередь на игру.");
             return;
         }
 
-        queue.add(player);
-        player.sendMessage(ChatUtil.colorize("&aВы были добавлены в очередь на игру. Ожидаем второго игрока..."));
+        queue.add(user);
+        user.sendMessage("&aВы были добавлены в очередь на игру. Ожидаем второго игрока...");
 
         // Проверяем возможно ли запустить игру
         if (queue.size() == 2) {
-            Player firstPlayer = queue.remove(0);
-            Player secondPlayer = queue.remove(0);
+            User firstPlayer = queue.remove(0);
+            User secondPlayer = queue.remove(0);
 
             // Создаём новую игру
             instance.getGameManager().create(firstPlayer, secondPlayer);
         }
     }
 
-    public void removeFromQueue(Player player) {
-        queue.remove(player);
+    public void removeFromQueue(User user) {
+        queue.remove(user);
     }
 
-    public boolean contains(Player player) {
-        return queue.contains(player);
+    public boolean contains(User user) {
+        return queue.contains(user);
     }
 }
