@@ -1,5 +1,6 @@
 package ru.majesty.memory.listener;
 
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,7 +21,9 @@ import static ru.majesty.memory.util.Constants.COVER;
 /**
  * Created by M4JESTY on 14.09.2023.
  */
+@RequiredArgsConstructor
 public class GameListener implements Listener {
+    private final Memory instance;
 
     @EventHandler
     public void on(InventoryClickEvent event) {
@@ -31,7 +34,7 @@ public class GameListener implements Listener {
                 return;
             }
 
-            Game game = Memory.getGameManager().getGame(player);
+            Game game = instance.getGameManager().getGame(player);
             if (game != null) {
                 event.setCancelled(true);
 
@@ -116,7 +119,7 @@ public class GameListener implements Listener {
     public void on(InventoryCloseEvent event) {
         if (event.getPlayer() instanceof Player) {
             Player player = (Player) event.getPlayer();
-            Game game = Memory.getGameManager().getGame(player);
+            Game game = instance.getGameManager().getGame(player);
 
             if (game != null && !game.isUpdate()) {
                 game.win(game.getOpponent(player));

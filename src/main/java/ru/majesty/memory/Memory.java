@@ -1,9 +1,6 @@
 package ru.majesty.memory;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -13,12 +10,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.majesty.memory.command.MemoryCommand;
 import ru.majesty.memory.database.DatabaseManager;
 import ru.majesty.memory.game.GameManager;
-import ru.majesty.memory.game.Queue;
+import ru.majesty.memory.game.QueueManager;
 import ru.majesty.memory.listener.GameListener;
 import ru.majesty.memory.listener.PlayerListener;
 import ru.majesty.memory.user.UserManager;
-
-import java.sql.Connection;
 
 /**
  * Created by M4JESTY on 14.09.2023.
@@ -28,28 +23,30 @@ public class Memory extends JavaPlugin {
     @Getter
     private static Memory instance;
     @Getter
-    private static Queue queue;
+    private QueueManager queueManager;
     @Getter
-    private static GameManager gameManager;
+    private GameManager gameManager;
     @Getter
-    private static DatabaseManager databaseManager;
+    private DatabaseManager databaseManager;
     @Getter
-    private static UserManager userManager;
+    private UserManager userManager;
 
     @Override
     public void onEnable() {
         instance = this;
-        queue = new Queue();
-        gameManager = new GameManager();
+
+        // Инициализируем менеджеры
         databaseManager = new DatabaseManager();
-        userManager = new UserManager();
+        userManager = new UserManager(this);
+        queueManager = new QueueManager(this);
+        gameManager = new GameManager(this);
 
         registerListeners(
-                new PlayerListener(),
-                new GameListener()
+                new PlayerListener(this),
+                new GameListener(this)
         );
 
-        tryRegisterCommand("memory", new MemoryCommand());
+        tryRegisterCommand("memory", new MemoryCommand(this));
     }
 
     private void registerListeners(Listener... listeners) {
@@ -67,10 +64,5 @@ public class Memory extends JavaPlugin {
             if (cmd instanceof TabCompleter)
                 pluginCmd.setTabCompleter((TabCompleter) cmd);
         }
-    }
-
-    @SneakyThrows
-    public static Connection getConnection() {
-        return databaseManager.getConnection();
     }
 }

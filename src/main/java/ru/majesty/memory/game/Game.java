@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import ru.majesty.memory.Memory;
 import ru.majesty.memory.user.User;
+import ru.majesty.memory.user.UserManager;
 import ru.majesty.memory.util.ChatUtil;
 import ru.majesty.memory.util.Constants;
 
@@ -21,8 +22,8 @@ import static ru.majesty.memory.util.Constants.COVER;
  * Created by M4JESTY on 14.09.2023.
  */
 public class Game {
-
-    private Player first, second;
+    private final Memory instance;
+    private Player firstPlayer, secondPlayer;
     @Getter
     private Player turn;
     private ItemStack[] pairs;
@@ -36,12 +37,13 @@ public class Game {
     @Setter
     private boolean update;
 
-    public Game(Player firstPlayer, Player secondPlayer) {
-        this.first = firstPlayer;
-        this.second = secondPlayer;
+    public Game(Memory instance, Player firstPlayer, Player secondPlayer) {
+        this.instance = instance;
+        this.firstPlayer = firstPlayer;
+        this.secondPlayer = secondPlayer;
         this.users = Arrays.asList(
-                User.wrap(firstPlayer),
-                User.wrap(secondPlayer)
+                UserManager.wrap(firstPlayer),
+                UserManager.wrap(secondPlayer)
         );
 
         // Определяем кто играет первый
@@ -77,8 +79,8 @@ public class Game {
     }
 
     public void broadcast(String message) {
-        first.sendMessage(message);
-        second.sendMessage(message);
+        firstPlayer.sendMessage(message);
+        secondPlayer.sendMessage(message);
     }
 
     public void changeItem(int index, ItemStack item) {
@@ -89,8 +91,8 @@ public class Game {
         setUpdate(true);
 
         Inventory temp = inventory;
-        this.inventory = Bukkit.createInventory(null, 54, "§6" + first.getName() + " " + getUser(first).getScore() + " : " +
-                getUser(second).getScore() + " " + second.getName());
+        this.inventory = Bukkit.createInventory(null, 54, "§6" + firstPlayer.getName() + " " + getUser(firstPlayer).getScore() + " : " +
+                getUser(secondPlayer).getScore() + " " + secondPlayer.getName());
 
         for (int i = 0; i < temp.getSize(); i++) {
             ItemStack item = temp.getItem(i);
@@ -114,29 +116,29 @@ public class Game {
         }
 
         // Обрабатываем победу и проигрыш
-        User.wrap(player).addWin();
-        User.wrap(getOpponent(player)).addLose();
+        UserManager.wrap(player).addWin();
+        UserManager.wrap(getOpponent(player)).addLose();
 
         // Удаляем игру
-        Memory.getGameManager().end(this);
+        instance.getGameManager().end(this);
 
         // Закрываем "стол"
-        if (first != null) first.closeInventory();
-        if (second != null) second.closeInventory();
+        if (firstPlayer != null) firstPlayer.closeInventory();
+        if (secondPlayer != null) secondPlayer.closeInventory();
     }
 
     public boolean checkWin() {
         int maxPairs = 14;
 
-        if (getUser(first).getScore() + getUser(second).getScore() < maxPairs) {
+        if (getUser(firstPlayer).getScore() + getUser(secondPlayer).getScore() < maxPairs) {
             return false;
         }
-        if (getUser(first).getScore() > getUser(second).getScore()) {
-            win(first);
+        if (getUser(firstPlayer).getScore() > getUser(secondPlayer).getScore()) {
+            win(firstPlayer);
             return true;
         }
-        if (getUser(first).getScore() < getUser(second).getScore()) {
-            win(second);
+        if (getUser(firstPlayer).getScore() < getUser(secondPlayer).getScore()) {
+            win(secondPlayer);
             return true;
         }
 
@@ -155,15 +157,15 @@ public class Game {
     }
 
     public Player getOpponent(Player player) {
-        return player.getName().equalsIgnoreCase(first.getName()) ? second : first;
+        return player.getName().equalsIgnoreCase(firstPlayer.getName()) ? secondPlayer : firstPlayer;
     }
 
     public List<Player> getPlayers() {
         List<Player> players = new ArrayList<>();
 
-        if (first.isOnline()) players.add(first);
+        if (firstPlayer.isOnline()) players.add(firstPlayer);
 
-        if (second.isOnline()) players.add(second);
+        if (secondPlayer.isOnline()) players.add(secondPlayer);
 
         return players;
     }
@@ -182,7 +184,7 @@ public class Game {
     }
 
     private void createInventory() {
-        this.inventory = Bukkit.createInventory(null, 54, "§6" + first.getName() + " 0 : 0 " + second.getName());
+        this.inventory = Bukkit.createInventory(null, 54, "§6" + firstPlayer.getName() + " 0 : 0 " + secondPlayer.getName());
 
         setBorder();
 
@@ -209,6 +211,6 @@ public class Game {
     }
 
     private Player getRandomTurn() {
-        return new Random().nextBoolean() ? first : second;
+        return new Random().nextBoolean() ? firstPlayer : secondPlayer;
     }
 }

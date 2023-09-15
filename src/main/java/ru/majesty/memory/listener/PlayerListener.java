@@ -1,5 +1,6 @@
 package ru.majesty.memory.listener;
 
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,34 +13,40 @@ import ru.majesty.memory.user.UserManager;
 /**
  * Created by M4JESTY on 14.09.2023.
  */
+@RequiredArgsConstructor
 public class PlayerListener implements Listener {
+    private final Memory instance;
 
     @EventHandler
     public void on(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Memory.getUserManager().load(player);
+        // Загружаем данные игрока
+        instance.getUserManager().load(player.getName());
     }
+
     @EventHandler
     public void on(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        // Проверяем есть ли игрок в очереди
-        if (Memory.getQueue().contains(player)) {
-            Memory.getQueue().removeFromQueue(player);
+        // Проверяем есть ли игрок в очереди и удаляем
+        if (instance.getQueueManager().contains(player)) {
+            instance.getQueueManager().removeFromQueue(player);
         }
 
-        Memory.getUserManager().unload(UserManager.wrap(player));
+        // Сохраняем и удаляем данные игрока
+        instance.getUserManager().unload(UserManager.wrap(player));
     }
 
     @EventHandler
     public void on(PlayerKickEvent event) {
         Player player = event.getPlayer();
 
-        // Проверяем есть ли игрок в очереди
-        if (Memory.getQueue().contains(player)) {
-            Memory.getQueue().removeFromQueue(player);
+        // Проверяем есть ли игрок в очереди и удаляем
+        if (instance.getQueueManager().contains(player)) {
+            instance.getQueueManager().removeFromQueue(player);
         }
 
-        Memory.getUserManager().unload(UserManager.wrap(player));
+        // Сохраняем и удаляем данные игрока
+        instance.getUserManager().unload(UserManager.wrap(player));
     }
 }

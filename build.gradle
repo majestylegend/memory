@@ -6,13 +6,18 @@ group 'ru.majesty'
 version '1.0.0'
 
 repositories {
-    mavenLocal()
+    mavenCentral()
     maven { url 'https://repo.papermc.io/repository/maven-public/' }
 }
 
 dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
-    implementation 'com.zaxxer:HikariCP:5.0.1'
+
+    implementation 'com.zaxxer:HikariCP:3.1.0'
+    implementation platform('org.jdbi:jdbi3-bom:3.18.1')
+    implementation 'org.jdbi:jdbi3-core'
+    implementation 'org.jdbi:jdbi3-sqlobject'
+
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 }

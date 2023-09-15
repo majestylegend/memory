@@ -1,6 +1,7 @@
 package ru.majesty.memory.game;
 
 import com.google.common.collect.Lists;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import ru.majesty.memory.Memory;
 import ru.majesty.memory.util.ChatUtil;
@@ -10,7 +11,9 @@ import java.util.List;
 /**
  * Created by M4JESTY on 14.09.2023.
  */
-public class Queue {
+@RequiredArgsConstructor
+public class QueueManager {
+    private final Memory instance;
     private final List<Player> queue = Lists.newArrayList();
 
     public void queue(Player player) {
@@ -29,7 +32,7 @@ public class Queue {
             Player secondPlayer = queue.remove(0);
 
             // Создаём новую игру
-            Memory.getGameManager().create(firstPlayer, secondPlayer);
+            instance.getGameManager().create(firstPlayer, secondPlayer);
         }
     }
 

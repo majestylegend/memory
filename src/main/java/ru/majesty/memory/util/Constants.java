@@ -1,13 +1,18 @@
 package ru.majesty.memory.util;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-
+/**
+ * Created by M4JESTY on 14.09.2023.
+ */
+@UtilityClass
 public class Constants {
-    public static final ItemStack COVER = new ItemStack(Material.BARRIER);
-    public static final ItemStack BORDER = new ItemStack(Material.GLASS_PANE);
-    public static final ItemStack[] DEFAULT_PAIRS =
+    public final String DEFAULT_PREFIX = "Игра";
+    public final ItemStack COVER = new ItemStack(Material.BARRIER);
+    public final ItemStack BORDER = new ItemStack(Material.GLASS_PANE);
+    public final ItemStack[] DEFAULT_PAIRS =
             new ItemStack[]{
                     new ItemStack(Material.DIAMOND),
                     new ItemStack(Material.GOLD_INGOT),
