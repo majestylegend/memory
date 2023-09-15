@@ -34,16 +34,17 @@ public class Memory extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        saveDefaultConfig();
 
         // Инициализируем менеджеры
-        databaseManager = new DatabaseManager();
+        databaseManager = new DatabaseManager(getConfig());
         userManager = new UserManager(this);
         queueManager = new QueueManager(this);
         gameManager = new GameManager(this);
 
         registerListeners(
                 new PlayerListener(this),
-                new GameListener(this)
+                new GameListener()
         );
 
         tryRegisterCommand("memory", new MemoryCommand(this));
